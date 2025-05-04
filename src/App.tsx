@@ -1,4 +1,5 @@
-import React from 'react';
+import CadastroCliente from './ClienteCadastro';
+
 import CadastroCliente from './ClienteCadastro';
 
 function App() {
