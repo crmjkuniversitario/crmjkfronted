@@ -1,6 +1,5 @@
 import CadastroCliente from './ClienteCadastro';
 
-import CadastroCliente from './ClienteCadastro';
 
 function App() {
   return (
