@@ -1,10 +1,10 @@
-import ClienteCadastro from './ClienteCadastro';
+import CadastroCliente from './CadastroCliente';
 
 
 function App() {
   return (
     <div>
-      <ClienteCadastro />
+      <CadastroCliente />
     </div>
   );
 }
