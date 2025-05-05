@@ -1,9 +1,10 @@
-import CadastroCliente from './ClienteCadastro.tsx';
+import ClienteCadastro from './ClienteCadastro';
+
 
 function App() {
   return (
     <div>
-      <CadastroCliente />
+      <ClienteCadastro />
     </div>
   );
 }
