@@ -1,103 +1,74 @@
-// src/pages/CadastroCliente.tsx
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+// src/CadastroCliente.tsx
+import { Card, CardContent } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button"
+import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 export default function CadastroCliente() {
   return (
-    <div className="min-h-screen bg-background text-foreground flex items-center justify-center p-4">
-      <Card className="w-full max-w-4xl shadow-xl border rounded-2xl">
-        <CardContent className="p-6 space-y-6">
-          <h2 className="text-2xl font-bold">Cadastro de Cliente</h2>
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-4">
+      <Card className="max-w-4xl mx-auto p-6">
+        <CardContent>
+          <h1 className="text-2xl font-bold mb-6">Cadastro de Cliente</h1>
 
-          {/* Dados Pessoais */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="nome">Nome completo</Label>
-              <Input id="nome" placeholder="João da Silva" />
+              <Label htmlFor="nome">Nome</Label>
+              <Input id="nome" placeholder="João" />
             </div>
-            <div>
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="joao@email.com" />
-            </div>
-            <div>
-              <Label htmlFor="telefone">Telefone</Label>
-              <Input id="telefone" placeholder="(00) 91234-5678" />
-            </div>
-            <div>
-              <Label htmlFor="nacionalidade">Nacionalidade</Label>
-              <Input id="nacionalidade" placeholder="Brasileira" />
-            </div>
-          </div>
 
-          {/* Documentos */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <Label htmlFor="sobrenome">Sobrenome</Label>
+              <Input id="sobrenome" placeholder="Silva" />
+            </div>
+
+            <div>
+              <Label htmlFor="nascimento">Data de nascimento</Label>
+              <Input type="date" id="nascimento" />
+            </div>
+
             <div>
               <Label htmlFor="cpf">CPF</Label>
-              <Input id="cpf" placeholder="000.000.000-00" />
+              <Input id="cpf" />
             </div>
+
             <div>
-              <Label htmlFor="rg">RG</Label>
-              <Input id="rg" placeholder="00.000.000-0" />
+              <Label htmlFor="email">E-mail</Label>
+              <Input id="email" type="email" />
             </div>
+
             <div>
-              <Label htmlFor="passaporte">Passaporte</Label>
-              <Input id="passaporte" placeholder="Opcional" />
+              <Label htmlFor="telefone">Celular</Label>
+              <Input id="telefone" type="tel" />
+            </div>
+
+            <div className="col-span-1 md:col-span-2">
+              <Label htmlFor="ocupacao">Ocupação</Label>
+              <Select>
+                <SelectTrigger id="ocupacao">
+                  <SelectValue placeholder="Selecione" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="universitario">Universitário(a)</SelectItem>
+                  <SelectItem value="profissional">Profissional</SelectItem>
+                  <SelectItem value="outro">Outro</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="col-span-1 md:col-span-2">
+              <Label htmlFor="observacoes">Observações</Label>
+              <Textarea id="observacoes" placeholder="Algo a mais que devemos saber?" />
             </div>
           </div>
 
-          {/* Endereço */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="endereco">Endereço</Label>
-              <Textarea id="endereco" placeholder="Rua Exemplo, 123, Bairro, Cidade - UF" />
-            </div>
-            <div>
-              <Label htmlFor="cep">CEP</Label>
-              <Input id="cep" placeholder="00000-000" />
-            </div>
-          </div>
-
-          {/* Dados do aluguel */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <Label htmlFor="inicio">Data de Início</Label>
-              <Input id="inicio" type="date" />
-            </div>
-            <div>
-              <Label htmlFor="fim">Data de Término</Label>
-              <Input id="fim" type="date" />
-            </div>
-            <div>
-              <Label htmlFor="valor">Valor Mensal</Label>
-              <Input id="valor" placeholder="R$ 1.200,00" />
-            </div>
-          </div>
-
-          {/* Ocupação */}
-          <div>
-            <Label htmlFor="ocupacao">Ocupação</Label>
-            <Select>
-              <SelectTrigger id="ocupacao">
-                <SelectValue placeholder="Selecione a ocupação" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="estudante">Estudante</SelectItem>
-                <SelectItem value="trabalhador">Trabalhador</SelectItem>
-                <SelectItem value="outro">Outro</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Botão */}
-          <div className="pt-4">
-            <Button className="w-full" type="submit">Cadastrar</Button>
+          <div className="mt-6 flex justify-end">
+            <Button type="submit">Cadastrar</Button>
           </div>
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }
