@@ -1,9 +1,8 @@
-import CadastroCliente from './ClienteCadastro';
-
+import CadastroCliente from './CadastroCliente';
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div>
       <CadastroCliente />
     </div>
   );
