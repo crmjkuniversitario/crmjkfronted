@@ -1,74 +1,141 @@
-// src/CadastroCliente.tsx
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import React, { useState } from 'react';
+import axios from 'axios';
 
-export default function CadastroCliente() {
-  return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-4">
-      <Card className="max-w-4xl mx-auto p-6">
-        <CardContent>
-          <h1 className="text-2xl font-bold mb-6">Cadastro de Cliente</h1>
+const CadastroCliente = () => {
+  const [formData, setFormData] = useState({});
+  const [files, setFiles] = useState({});
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="nome">Nome</Label>
-              <Input id="nome" placeholder="João" />
-            </div>
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target;
+    if (type === 'file' && 'files' in e.target) {
+      const fileInput = e.target as HTMLInputElement;
+      setFiles((prev) => ({ ...prev, [name]: fileInput.files?.[0] }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
 
-            <div>
-              <Label htmlFor="sobrenome">Sobrenome</Label>
-              <Input id="sobrenome" placeholder="Silva" />
-            </div>
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const data = new FormData();
 
-            <div>
-              <Label htmlFor="nascimento">Data de nascimento</Label>
-              <Input type="date" id="nascimento" />
-            </div>
+    Object.entries(formData).forEach(([key, value]) => {
+      data.append(key, value as string);
+    });
 
-            <div>
-              <Label htmlFor="cpf">CPF</Label>
-              <Input id="cpf" />
-            </div>
+    Object.values(files).forEach((file) => {
+      if (file) {
+        data.append('arquivos', file as Blob);
+      }
+    });
 
-            <div>
-              <Label htmlFor="email">E-mail</Label>
-              <Input id="email" type="email" />
-            </div>
+    try {
+      const nomeCliente = (formData as any).nome || 'cliente';
+      await axios.post(`http://localhost:3000/upload/${nomeCliente}`, data, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      alert('Cadastro e upload realizados com sucesso!');
+    } catch (error) {
+      console.error(error);
+      alert('Erro ao enviar dados.');
+    }
+  };
 
-            <div>
-              <Label htmlFor="telefone">Celular</Label>
-              <Input id="telefone" type="tel" />
-            </div>
-
-            <div className="col-span-1 md:col-span-2">
-              <Label htmlFor="ocupacao">Ocupação</Label>
-              <Select>
-                <SelectTrigger id="ocupacao">
-                  <SelectValue placeholder="Selecione" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="universitario">Universitário(a)</SelectItem>
-                  <SelectItem value="profissional">Profissional</SelectItem>
-                  <SelectItem value="outro">Outro</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="col-span-1 md:col-span-2">
-              <Label htmlFor="observacoes">Observações</Label>
-              <Textarea id="observacoes" placeholder="Algo a mais que devemos saber?" />
-            </div>
-          </div>
-
-          <div className="mt-6 flex justify-end">
-            <Button type="submit">Cadastrar</Button>
-          </div>
-        </CardContent>
-      </Card>
+  const Input = ({ label, name, ...props }: { label: string; name: string; [key: string]: any }) => (
+    <div>
+      <label className="form-label">{label}</label>
+      <input name={name} onChange={handleChange} className="form-input" {...props} />
     </div>
-  )
-}
+  );
+
+  const Select = ({
+    label,
+    name,
+    options,
+  }: {
+    label: string;
+    name: string;
+    options: string[];
+  }) => (
+    <div>
+      <label className="form-label">{label}</label>
+      <select name={name} onChange={handleChange} className="form-input">
+        {options.map((opt, i) => (
+          <option key={i} value={opt}>
+            {opt}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+
+  return (
+    <div className="form-container">
+      <form onSubmit={handleSubmit} className="form-box">
+        <h1 className="form-title">Cadastro de Cliente</h1>
+
+        <div className="space-y-4">
+          <Input label="Nome" name="nome" type="text" />
+          <Input label="Sobrenome" name="sobrenome" type="text" />
+          <Input label="Data de nascimento" name="nascimento" type="date" />
+          <Input label="CPF" name="cpf" type="text" />
+          <Input label="CPF (frente)" name="cpfFrente" type="file" accept="image/*" />
+          <Input label="CPF (verso)" name="cpfVerso" type="file" accept="image/*" />
+          <Input label="RG" name="rg" type="text" />
+          <Input label="RG (frente)" name="rgFrente" type="file" accept="image/*" />
+          <Input label="RG (verso)" name="rgVerso" type="file" accept="image/*" />
+          <Input label="Passaporte (Estrangeiro)" name="passaporte" type="text" />
+          <Input label="Passaporte (foto)" name="passaporteFoto" type="file" accept="image/*" />
+          <Input label="Nacionalidade" name="nacionalidade" type="text" />
+          <Select label="Ocupação" name="ocupacao" options={['Universitário(a)', 'Trabalhador(a)']} />
+          <Input label="Celular" name="celular" type="text" />
+          <Input label="E-mail" name="email" type="email" />
+          <Select label="Rua" name="rua" options={['Rua Euclides da Cunha', 'Osvaldo Cruz']} />
+          <Select label="N° do imóvel" name="numero" options={['421', '411', '35']} />
+          <Select
+            label="Complemento"
+            name="complemento"
+            options={[
+              'Quarto 1',
+              'Quarto 2',
+              'Quarto 3',
+              'JK 1',
+              'JK 2',
+              'JK 3',
+              'JK 4',
+              'Apartamento térreo',
+              'Apartamento 1',
+              'Apartamento 3',
+              'Apartamento 4',
+              'Apartamento 5',
+              'Kitnet',
+            ]}
+          />
+          <Input label="Bairro" name="bairro" placeholder="Jardim Universitário" type="text" />
+          <Input label="CEP" name="cep" placeholder="94500-300" type="text" />
+          <Input label="Cidade" name="cidade" placeholder="Viamão" type="text" />
+          <Input label="Estado" name="estado" placeholder="RS" type="text" />
+          <Select label="Tempo de moradia (meses)" name="tempoMoradia" options={['6', '12']} />
+          <Input label="Data de entrada" name="entrada" type="date" />
+          <Input label="Data de saída" name="saida" type="date" />
+          <Input label="Dia de pagamento" name="diaPagamento" type="number" min={1} max={10} />
+          <Select label="Valor do aluguel" name="valor" options={['Selecione', 'R$ 750,00', 'R$ 950,00', 'R$ 1.000,00']} />
+
+          <button type="submit" className="form-button">
+            Cadastrar
+          </button>
+
+          <button
+            type="button"
+            className="form-button border border-primary bg-transparent text-primary hover:bg-primary/10"
+            onClick={() => window.prompt('Clique em "Instalar" no navegador para adicionar o app à tela inicial.')}
+          >
+            Instalar App
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default CadastroCliente;
