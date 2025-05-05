@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import './index.css'; // ✅ correto
+import './index.css'; // <-- se o arquivo está em src/index.css
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
