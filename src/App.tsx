@@ -1,4 +1,4 @@
-import CadastroCliente from './CadastroCliente';
+import CadastroCliente from './ClienteCadastro.tsx';
 
 function App() {
   return (
