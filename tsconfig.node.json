@@ -11,7 +11,10 @@
     "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
-    "noEmit": true,
+
+    /* Necessário para suportar project references */
+    "composite": true,
+    "noEmit": false,
 
     /* Linting */
     "strict": true,
