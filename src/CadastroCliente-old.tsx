@@ -1,9 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+
+let deferredPrompt: any = null;
 
 const CadastroCliente = () => {
   const [formData, setFormData] = useState({});
   const [files, setFiles] = useState({});
+  const [showInstall, setShowInstall] = useState(false);
+
+  useEffect(() => {
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      setShowInstall(true);
+    });
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
@@ -41,6 +52,18 @@ const CadastroCliente = () => {
     }
   };
 
+  const handleInstallClick = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const choice = await deferredPrompt.userChoice;
+      if (choice.outcome === 'accepted') {
+        console.log('Usuário aceitou a instalação');
+      }
+      deferredPrompt = null;
+      setShowInstall(false);
+    }
+  };
+
   const Input = ({ label, name, ...props }: { label: string; name: string; [key: string]: any }) => (
     <div className="mb-4">
       <label className="block text-sm font-medium text-gray-700">{label}</label>
@@ -48,22 +71,12 @@ const CadastroCliente = () => {
     </div>
   );
 
-  const Select = ({
-    label,
-    name,
-    options,
-  }: {
-    label: string;
-    name: string;
-    options: string[];
-  }) => (
+  const Select = ({ label, name, options }: { label: string; name: string; options: string[] }) => (
     <div className="mb-4">
       <label className="block text-sm font-medium text-gray-700">{label}</label>
       <select name={name} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md p-2">
         {options.map((opt, i) => (
-          <option key={i} value={opt}>
-            {opt}
-          </option>
+          <option key={i} value={opt}>{opt}</option>
         ))}
       </select>
     </div>
@@ -86,52 +99,39 @@ const CadastroCliente = () => {
         <Input label="Passaporte (Estrangeiro)" name="passaporte" type="text" />
         <Input label="Passaporte (foto)" name="passaporteFoto" type="file" accept="image/*" />
         <Input label="Nacionalidade" name="nacionalidade" type="text" />
-        <Select label="Ocupação" name="ocupacao" options={['Universitário(a)', 'Trabalhador(a)']} />
+        <Select label="Ocupação" name="ocupacao" options={["Universitário(a)", "Trabalhador(a)"]} />
         <Input label="Celular" name="celular" type="text" />
         <Input label="E-mail" name="email" type="email" />
-        <Select label="Rua" name="rua" options={['Rua Euclides da Cunha', 'Osvaldo Cruz']} />
-        <Select label="N° do imóvel" name="numero" options={['421', '411', '35']} />
-        <Select
-          label="Complemento"
-          name="complemento"
-          options={[
-            'Quarto 1',
-            'Quarto 2',
-            'Quarto 3',
-            'JK 1',
-            'JK 2',
-            'JK 3',
-            'JK 4',
-            'Apartamento térreo',
-            'Apartamento 1',
-            'Apartamento 3',
-            'Apartamento 4',
-            'Apartamento 5',
-            'Kitnet',
-          ]}
-        />
+        <Select label="Rua" name="rua" options={["Rua Euclides da Cunha", "Osvaldo Cruz"]} />
+        <Select label="N° do imóvel" name="numero" options={["421", "411", "35"]} />
+        <Select label="Complemento" name="complemento" options={[
+          "Quarto 1", "Quarto 2", "Quarto 3", "JK 1", "JK 2", "JK 3", "JK 4",
+          "Apartamento térreo", "Apartamento 1", "Apartamento 3", "Apartamento 4",
+          "Apartamento 5", "Kitnet"]} />
         <Input label="Bairro" name="bairro" placeholder="Jardim Universitário" type="text" />
         <Input label="CEP" name="cep" placeholder="94500-300" type="text" />
         <Input label="Cidade" name="cidade" placeholder="Viamão" type="text" />
         <Input label="Estado" name="estado" placeholder="RS" type="text" />
-        <Select label="Tempo de moradia (meses)" name="tempoMoradia" options={['6', '12']} />
+        <Select label="Tempo de moradia (meses)" name="tempoMoradia" options={["6", "12"]} />
         <Input label="Data de entrada" name="entrada" type="date" />
         <Input label="Data de saída" name="saida" type="date" />
         <Input label="Dia de pagamento" name="diaPagamento" type="number" min={1} max={10} />
-        <Select label="Valor do aluguel" name="valor" options={['Selecione', 'R$ 750,00', 'R$ 950,00', 'R$ 1.000,00']} />
+        <Select label="Valor do aluguel" name="valor" options={["Selecione", "R$ 750,00", "R$ 950,00", "R$ 1.000,00"]} />
 
         <div className="flex flex-col gap-2 mt-6">
           <button type="submit" className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
             Cadastrar
           </button>
 
-          <button
-            type="button"
-            className="border border-blue-600 text-blue-600 py-2 rounded hover:bg-blue-100"
-            onClick={() => window.prompt('Clique em "Instalar" no navegador para adicionar o app à tela inicial.')}
-          >
-            Instalar App
-          </button>
+          {showInstall && (
+            <button
+              type="button"
+              className="border border-blue-600 text-blue-600 py-2 rounded hover:bg-blue-100"
+              onClick={handleInstallClick}
+            >
+              Instalar App
+            </button>
+          )}
         </div>
       </form>
     </div>
