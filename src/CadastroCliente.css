@@ -1,0 +1,50 @@
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 40px 24px;
+  background-color: black;
+  color: white;
+  font-family: sans-serif;
+}
+
+.titulo {
+  font-size: 1.875rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  text-align: center;
+  letter-spacing: 0.1em;
+}
+
+.formulario {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.input {
+  background-color: #1a1a1a;
+  border: 1px solid #3f3f3f;
+  padding: 12px;
+  border-radius: 6px;
+  color: white;
+}
+
+.botoes {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.botao {
+  background-color: #202020;
+  color: #f97316;
+  padding: 10px 24px;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+  border: none;
+}
+
+.botao:hover {
+  background-color: #3a3a3a;
+}
