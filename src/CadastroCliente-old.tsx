@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './CadastroCliente.module.css';
+import './CadastroCliente.css'; // Sem o .module
 
 const CadastroCliente = () => {
   const [formData, setFormData] = useState({});
