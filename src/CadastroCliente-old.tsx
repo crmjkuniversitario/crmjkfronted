@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-import './CadastroCliente.css'; // Sem o .module
-
 const CadastroCliente = () => {
   const [formData, setFormData] = useState({});
   const [files, setFiles] = useState({});
@@ -44,9 +42,9 @@ const CadastroCliente = () => {
   };
 
   const Input = ({ label, name, ...props }: { label: string; name: string; [key: string]: any }) => (
-    <div>
-      <label className={styles.formLabel}>{label}</label>
-      <input name={name} onChange={handleChange} className={styles.formInput} {...props} />
+    <div className="mb-4">
+      <label className="block text-sm font-medium text-gray-700">{label}</label>
+      <input name={name} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md p-2" {...props} />
     </div>
   );
 
@@ -59,9 +57,9 @@ const CadastroCliente = () => {
     name: string;
     options: string[];
   }) => (
-    <div>
-      <label className={styles.formLabel}>{label}</label>
-      <select name={name} onChange={handleChange} className={styles.formInput}>
+    <div className="mb-4">
+      <label className="block text-sm font-medium text-gray-700">{label}</label>
+      <select name={name} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md p-2">
         {options.map((opt, i) => (
           <option key={i} value={opt}>
             {opt}
@@ -72,9 +70,9 @@ const CadastroCliente = () => {
   );
 
   return (
-    <div className={styles.formContainer}>
-      <form onSubmit={handleSubmit} className={styles.formBox}>
-        <h1 className={styles.formTitle}>Cadastro de Cliente</h1>
+    <div className="max-w-3xl mx-auto p-6 bg-white rounded shadow">
+      <form onSubmit={handleSubmit}>
+        <h1 className="text-2xl font-bold mb-6 text-center">Cadastro de Cliente</h1>
 
         <Input label="Nome" name="nome" type="text" />
         <Input label="Sobrenome" name="sobrenome" type="text" />
@@ -97,9 +95,19 @@ const CadastroCliente = () => {
           label="Complemento"
           name="complemento"
           options={[
-            'Quarto 1', 'Quarto 2', 'Quarto 3', 'JK 1', 'JK 2', 'JK 3', 'JK 4',
-            'Apartamento térreo', 'Apartamento 1', 'Apartamento 3', 'Apartamento 4',
-            'Apartamento 5', 'Kitnet',
+            'Quarto 1',
+            'Quarto 2',
+            'Quarto 3',
+            'JK 1',
+            'JK 2',
+            'JK 3',
+            'JK 4',
+            'Apartamento térreo',
+            'Apartamento 1',
+            'Apartamento 3',
+            'Apartamento 4',
+            'Apartamento 5',
+            'Kitnet',
           ]}
         />
         <Input label="Bairro" name="bairro" placeholder="Jardim Universitário" type="text" />
@@ -112,17 +120,19 @@ const CadastroCliente = () => {
         <Input label="Dia de pagamento" name="diaPagamento" type="number" min={1} max={10} />
         <Select label="Valor do aluguel" name="valor" options={['Selecione', 'R$ 750,00', 'R$ 950,00', 'R$ 1.000,00']} />
 
-        <button type="submit" className={styles.formButton}>
-          Cadastrar
-        </button>
+        <div className="flex flex-col gap-2 mt-6">
+          <button type="submit" className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+            Cadastrar
+          </button>
 
-        <button
-          type="button"
-          className={styles.formButton}
-          onClick={() => window.prompt('Clique em "Instalar" no navegador para adicionar o app à tela inicial.')}
-        >
-          Instalar App
-        </button>
+          <button
+            type="button"
+            className="border border-blue-600 text-blue-600 py-2 rounded hover:bg-blue-100"
+            onClick={() => window.prompt('Clique em "Instalar" no navegador para adicionar o app à tela inicial.')}
+          >
+            Instalar App
+          </button>
+        </div>
       </form>
     </div>
   );
