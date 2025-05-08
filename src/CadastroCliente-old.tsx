@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import "./CadastroCliente.css";
 const CadastroCliente = () => {
   const [formData, setFormData] = useState({});
   const [files, setFiles] = useState({});
