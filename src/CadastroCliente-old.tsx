@@ -4,17 +4,24 @@ import axios from 'axios';
 const CadastroCliente = () => {
   const [formData, setFormData] = useState({});
   const [files, setFiles] = useState({});
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
-  const [showInstall, setShowInstall] = useState(false);
 
   useEffect(() => {
-    const handler = (e: any) => {
+    const handler = async (e: any) => {
       e.preventDefault();
-      setDeferredPrompt(e);
-      setShowInstall(true);
+      const aceitar = window.confirm("Deseja instalar este app?");
+      if (aceitar) {
+        e.prompt();
+        const resultado = await e.userChoice;
+        if (resultado.outcome === 'accepted') {
+          console.log('Usuário aceitou instalar o app.');
+        } else {
+          console.log('Usuário recusou instalar o app.');
+        }
+      }
     };
-    window.addEventListener('beforeinstallprompt', handler);
-    return () => window.removeEventListener('beforeinstallprompt', handler);
+
+    window.addEventListener("beforeinstallprompt", handler);
+    return () => window.removeEventListener("beforeinstallprompt", handler);
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -53,33 +60,30 @@ const CadastroCliente = () => {
     }
   };
 
-  const handleInstallClick = async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === 'accepted') {
-        console.log('Usuário aceitou instalar o app.');
-      } else {
-        console.log('Usuário recusou instalar o app.');
-      }
-      setDeferredPrompt(null);
-      setShowInstall(false);
-    }
-  };
-
   const Input = ({ label, name, ...props }: { label: string; name: string; [key: string]: any }) => (
     <div className="mb-4">
       <label className="block text-sm font-medium text-gray-700">{label}</label>
-      <input name={name} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md p-2" {...props} />
+      <input
+        name={name}
+        onChange={handleChange}
+        className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+        {...props}
+      />
     </div>
   );
 
   const Select = ({ label, name, options }: { label: string; name: string; options: string[] }) => (
     <div className="mb-4">
       <label className="block text-sm font-medium text-gray-700">{label}</label>
-      <select name={name} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md p-2">
+      <select
+        name={name}
+        onChange={handleChange}
+        className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+      >
         {options.map((opt, i) => (
-          <option key={i} value={opt}>{opt}</option>
+          <option key={i} value={opt}>
+            {opt}
+          </option>
         ))}
       </select>
     </div>
@@ -107,10 +111,15 @@ const CadastroCliente = () => {
         <Input label="E-mail" name="email" type="email" />
         <Select label="Rua" name="rua" options={["Rua Euclides da Cunha", "Osvaldo Cruz"]} />
         <Select label="N° do imóvel" name="numero" options={["421", "411", "35"]} />
-        <Select label="Complemento" name="complemento" options={[
-          "Quarto 1", "Quarto 2", "Quarto 3", "JK 1", "JK 2", "JK 3", "JK 4",
-          "Apartamento térreo", "Apartamento 1", "Apartamento 3", "Apartamento 4",
-          "Apartamento 5", "Kitnet"]} />
+        <Select
+          label="Complemento"
+          name="complemento"
+          options={[
+            "Quarto 1", "Quarto 2", "Quarto 3", "JK 1", "JK 2", "JK 3", "JK 4",
+            "Apartamento térreo", "Apartamento 1", "Apartamento 3", "Apartamento 4",
+            "Apartamento 5", "Kitnet",
+          ]}
+        />
         <Input label="Bairro" name="bairro" placeholder="Jardim Universitário" type="text" />
         <Input label="CEP" name="cep" placeholder="94500-300" type="text" />
         <Input label="Cidade" name="cidade" placeholder="Viamão" type="text" />
@@ -119,22 +128,19 @@ const CadastroCliente = () => {
         <Input label="Data de entrada" name="entrada" type="date" />
         <Input label="Data de saída" name="saida" type="date" />
         <Input label="Dia de pagamento" name="diaPagamento" type="number" min={1} max={10} />
-        <Select label="Valor do aluguel" name="valor" options={["Selecione", "R$ 750,00", "R$ 950,00", "R$ 1.000,00"]} />
+        <Select
+          label="Valor do aluguel"
+          name="valor"
+          options={["Selecione", "R$ 750,00", "R$ 950,00", "R$ 1.000,00"]}
+        />
 
         <div className="flex flex-col gap-2 mt-6">
-          <button type="submit" className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+          <button
+            type="submit"
+            className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          >
             Cadastrar
           </button>
-
-          {showInstall && (
-            <button
-              type="button"
-              className="border border-blue-600 text-blue-600 py-2 rounded hover:bg-blue-100"
-              onClick={handleInstallClick}
-            >
-              Instalar App
-            </button>
-          )}
         </div>
       </form>
     </div>
