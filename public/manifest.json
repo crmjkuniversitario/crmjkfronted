@@ -1,7 +1,7 @@
 {
   "name": "CRM JK Universitário",
   "short_name": "CRM JK",
-  "start_url": ".",
+  "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#1e40af",
