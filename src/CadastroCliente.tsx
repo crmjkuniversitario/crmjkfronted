@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import "./CadastroCliente.css";
+import './CadastroCliente.css';
 
 const CadastroCliente = () => {
   const [formData, setFormData] = useState({
@@ -25,10 +25,10 @@ const CadastroCliente = () => {
     entrada: "",
     saida: "",
     diaPagamento: "",
-    valor: "",
+    valor: ""
   });
 
-  const [files, setFiles] = useState<{ [key: string]: File | undefined }>({});
+  const [files, setFiles] = useState<any>({});
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
   useEffect(() => {
@@ -58,7 +58,7 @@ const CadastroCliente = () => {
     const { name, value, type } = e.target;
     if (type === 'file' && 'files' in e.target) {
       const fileInput = e.target as HTMLInputElement;
-      setFiles((prev) => ({ ...prev, [name]: fileInput.files?.[0] }));
+      setFiles((prev: any) => ({ ...prev, [name]: fileInput.files?.[0] }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
@@ -73,9 +73,7 @@ const CadastroCliente = () => {
     });
 
     Object.entries(files).forEach(([key, file]) => {
-      if (file) {
-        data.append(key, file);
-      }
+      if (file) data.append('arquivos', file);
     });
 
     try {
@@ -95,7 +93,7 @@ const CadastroCliente = () => {
       <label className="block text-sm font-medium text-gray-700">{label}</label>
       <input
         name={name}
-        value={props.type !== 'file' ? formData[name as keyof typeof formData] : undefined}
+        value={formData[name] || ""}
         onChange={handleChange}
         className="mt-1 block w-full border border-gray-300 rounded-md p-2"
         {...props}
@@ -108,10 +106,11 @@ const CadastroCliente = () => {
       <label className="block text-sm font-medium text-gray-700">{label}</label>
       <select
         name={name}
-        value={formData[name as keyof typeof formData]}
+        value={formData[name]}
         onChange={handleChange}
         className="mt-1 block w-full border border-gray-300 rounded-md p-2"
       >
+        <option value="">Selecione</option>
         {options.map((opt, i) => (
           <option key={i} value={opt}>
             {opt}
@@ -143,15 +142,11 @@ const CadastroCliente = () => {
         <Input label="E-mail" name="email" type="email" />
         <Select label="Rua" name="rua" options={["Rua Euclides da Cunha", "Osvaldo Cruz"]} />
         <Select label="N° do imóvel" name="numero" options={["421", "411", "35"]} />
-        <Select
-          label="Complemento"
-          name="complemento"
-          options={[
-            "Quarto 1", "Quarto 2", "Quarto 3", "JK 1", "JK 2", "JK 3", "JK 4",
-            "Apartamento térreo", "Apartamento 1", "Apartamento 3", "Apartamento 4",
-            "Apartamento 5", "Kitnet",
-          ]}
-        />
+        <Select label="Complemento" name="complemento" options={[
+          "Quarto 1", "Quarto 2", "Quarto 3", "JK 1", "JK 2", "JK 3", "JK 4",
+          "Apartamento térreo", "Apartamento 1", "Apartamento 3", "Apartamento 4",
+          "Apartamento 5", "Kitnet",
+        ]} />
         <Input label="Bairro" name="bairro" placeholder="Jardim Universitário" type="text" />
         <Input label="CEP" name="cep" placeholder="94500-300" type="text" />
         <Input label="Cidade" name="cidade" placeholder="Viamão" type="text" />
@@ -160,11 +155,7 @@ const CadastroCliente = () => {
         <Input label="Data de entrada" name="entrada" type="date" />
         <Input label="Data de saída" name="saida" type="date" />
         <Input label="Dia de pagamento" name="diaPagamento" type="number" min={1} max={10} />
-        <Select
-          label="Valor do aluguel"
-          name="valor"
-          options={["Selecione", "R$ 750,00", "R$ 950,00", "R$ 1.000,00"]}
-        />
+        <Select label="Valor do aluguel" name="valor" options={["R$ 750,00", "R$ 950,00", "R$ 1.000,00"]} />
 
         <div className="flex flex-col gap-2 mt-6">
           <button type="submit" className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
@@ -172,8 +163,8 @@ const CadastroCliente = () => {
           </button>
           <button
             type="button"
-            onClick={handleInstallClick}
             className="bg-green-600 text-white py-2 rounded hover:bg-green-700"
+            onClick={handleInstallClick}
           >
             Instalar App
           </button>
