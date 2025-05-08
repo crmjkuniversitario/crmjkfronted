@@ -1,5 +1,5 @@
 
-import CadastroCliente from './CadastroCliente-old';
+import CadastroCliente from './CadastroCliente';
 
 
 function App() {
