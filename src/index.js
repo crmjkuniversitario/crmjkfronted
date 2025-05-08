@@ -3,19 +3,20 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import * as serviceWorkerRegistration from './serviceWorkerRegistration'; // Importar o service worker
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
+// Criando a raiz do React
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+// Renderizando o componente App dentro do React
 root.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>
 );
 
-// Registrar o service worker
+// Registrando o service worker para habilitar funcionalidades PWA
 serviceWorkerRegistration.register();
 
-// Se você quiser medir o desempenho no seu app, passe uma função
-// para registrar os resultados (por exemplo: reportWebVitals(console.log))
-// ou envie para um endpoint de análise. Saiba mais: https://bit.ly/CRA-vitals
+// Relatar métricas de performance (opcional)
 reportWebVitals();
