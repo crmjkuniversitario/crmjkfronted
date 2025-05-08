@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-let deferredPrompt: any = null;
-
 const CadastroCliente = () => {
   const [formData, setFormData] = useState({});
   const [files, setFiles] = useState({});
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [showInstall, setShowInstall] = useState(false);
 
   useEffect(() => {
-    window.addEventListener('beforeinstallprompt', (e) => {
+    const handler = (e: any) => {
       e.preventDefault();
-      deferredPrompt = e;
+      setDeferredPrompt(e);
       setShowInstall(true);
-    });
+    };
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -55,11 +56,13 @@ const CadastroCliente = () => {
   const handleInstallClick = async () => {
     if (deferredPrompt) {
       deferredPrompt.prompt();
-      const choice = await deferredPrompt.userChoice;
-      if (choice.outcome === 'accepted') {
-        console.log('Usuário aceitou a instalação');
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        console.log('Usuário aceitou instalar o app.');
+      } else {
+        console.log('Usuário recusou instalar o app.');
       }
-      deferredPrompt = null;
+      setDeferredPrompt(null);
       setShowInstall(false);
     }
   };
