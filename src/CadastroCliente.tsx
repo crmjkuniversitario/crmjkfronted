@@ -1,28 +1,58 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import "./CadastroCliente.css";
+
 const CadastroCliente = () => {
-  const [formData, setFormData] = useState({});
-  const [files, setFiles] = useState({});
+  const [formData, setFormData] = useState({
+    nome: "",
+    sobrenome: "",
+    nascimento: "",
+    cpf: "",
+    rg: "",
+    passaporte: "",
+    nacionalidade: "",
+    ocupacao: "",
+    celular: "",
+    email: "",
+    rua: "",
+    numero: "",
+    complemento: "",
+    bairro: "",
+    cep: "",
+    cidade: "",
+    estado: "",
+    tempoMoradia: "",
+    entrada: "",
+    saida: "",
+    diaPagamento: "",
+    valor: "",
+  });
+
+  const [files, setFiles] = useState<{ [key: string]: File | undefined }>({});
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
   useEffect(() => {
-    const handler = async (e: any) => {
+    const handler = (e: any) => {
       e.preventDefault();
-      const aceitar = window.confirm("Deseja instalar este app?");
-      if (aceitar) {
-        e.prompt();
-        const resultado = await e.userChoice;
-        if (resultado.outcome === 'accepted') {
-          console.log('Usuário aceitou instalar o app.');
-        } else {
-          console.log('Usuário recusou instalar o app.');
-        }
-      }
+      setDeferredPrompt(e);
     };
-
     window.addEventListener("beforeinstallprompt", handler);
     return () => window.removeEventListener("beforeinstallprompt", handler);
   }, []);
+
+  const handleInstallClick = () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult: any) => {
+        if (choiceResult.outcome === "accepted") {
+          console.log("Usuário aceitou instalar o app");
+        }
+        setDeferredPrompt(null);
+      });
+    } else {
+      alert("Instalação não disponível no momento.");
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
@@ -39,17 +69,17 @@ const CadastroCliente = () => {
     const data = new FormData();
 
     Object.entries(formData).forEach(([key, value]) => {
-      data.append(key, value as string);
+      data.append(key, value);
     });
 
-    Object.values(files).forEach((file) => {
+    Object.entries(files).forEach(([key, file]) => {
       if (file) {
-        data.append('arquivos', file as Blob);
+        data.append(key, file);
       }
     });
 
     try {
-      const nomeCliente = (formData as any).nome || 'cliente';
+      const nomeCliente = formData.nome || 'cliente';
       await axios.post(`http://localhost:3000/upload/${nomeCliente}`, data, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
@@ -65,6 +95,7 @@ const CadastroCliente = () => {
       <label className="block text-sm font-medium text-gray-700">{label}</label>
       <input
         name={name}
+        value={props.type !== 'file' ? formData[name as keyof typeof formData] : undefined}
         onChange={handleChange}
         className="mt-1 block w-full border border-gray-300 rounded-md p-2"
         {...props}
@@ -77,6 +108,7 @@ const CadastroCliente = () => {
       <label className="block text-sm font-medium text-gray-700">{label}</label>
       <select
         name={name}
+        value={formData[name as keyof typeof formData]}
         onChange={handleChange}
         className="mt-1 block w-full border border-gray-300 rounded-md p-2"
       >
@@ -135,11 +167,15 @@ const CadastroCliente = () => {
         />
 
         <div className="flex flex-col gap-2 mt-6">
-          <button
-            type="submit"
-            className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-          >
+          <button type="submit" className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
             Cadastrar
+          </button>
+          <button
+            type="button"
+            onClick={handleInstallClick}
+            className="bg-green-600 text-white py-2 rounded hover:bg-green-700"
+          >
+            Instalar App
           </button>
         </div>
       </form>
