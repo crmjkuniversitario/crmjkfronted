@@ -93,15 +93,29 @@ const CadastroCliente = () => {
     }
   };
 
-  const Input = ({ label, name, ...props }: { label: string; name: string; [key: string]: any }) => (
+  const TextInput = ({ label, name, type = "text", ...props }: { label: string; name: string; type?: string; [key: string]: any }) => (
     <div className="formulario">
       <label>{label}</label>
       <input
         name={name}
+        type={type}
         value={formData[name] || ""}
         onChange={handleChange}
         className="input"
         {...props}
+      />
+    </div>
+  );
+
+  const FileInput = ({ label, name }: { label: string; name: string }) => (
+    <div className="formulario">
+      <label>{label}</label>
+      <input
+        type="file"
+        name={name}
+        accept="image/*"
+        onChange={handleChange}
+        className="input"
       />
     </div>
   );
@@ -127,32 +141,32 @@ const CadastroCliente = () => {
     <div className="container">
       <h1 className="titulo">Cadastro de Cliente</h1>
       <form onSubmit={handleSubmit}>
-        <Input label="Nome" name="nome" type="text" />
-        <Input label="Sobrenome" name="sobrenome" type="text" />
-        <Input label="Data de nascimento" name="nascimento" type="date" />
-        <Input label="CPF" name="cpf" type="text" />
-        <Input label="CPF (frente)" name="cpfFrente" type="file" accept="image/*" />
-        <Input label="CPF (verso)" name="cpfVerso" type="file" accept="image/*" />
-        <Input label="RG" name="rg" type="text" />
-        <Input label="RG (frente)" name="rgFrente" type="file" accept="image/*" />
-        <Input label="RG (verso)" name="rgVerso" type="file" accept="image/*" />
-        <Input label="Passaporte (estrangeiro)" name="passaporte" type="text" />
-        <Input label="Foto do passaporte" name="passaporteFoto" type="file" accept="image/*" />
-        <Input label="Nacionalidade" name="nacionalidade" type="text" />
+        <TextInput label="Nome" name="nome" />
+        <TextInput label="Sobrenome" name="sobrenome" />
+        <TextInput label="Data de nascimento" name="nascimento" type="date" />
+        <TextInput label="CPF" name="cpf" />
+        <FileInput label="CPF (frente)" name="cpfFrente" />
+        <FileInput label="CPF (verso)" name="cpfVerso" />
+        <TextInput label="RG" name="rg" />
+        <FileInput label="RG (frente)" name="rgFrente" />
+        <FileInput label="RG (verso)" name="rgVerso" />
+        <TextInput label="Passaporte (estrangeiro)" name="passaporte" />
+        <FileInput label="Foto do passaporte" name="passaporteFoto" />
+        <TextInput label="Nacionalidade" name="nacionalidade" />
         <Select label="Ocupação" name="ocupacao" options={["Universitário(a)", "Trabalhador(a)"]} />
-        <Input label="Celular" name="celular" type="text" />
-        <Input label="Email" name="email" type="email" />
+        <TextInput label="Celular" name="celular" />
+        <TextInput label="Email" name="email" type="email" />
         <Select label="Rua" name="rua" options={["Rua Euclides da Cunha", "Osvaldo Cruz"]} />
         <Select label="Nº do imóvel" name="numero" options={["421", "411", "35"]} />
         <Select label="Complemento" name="complemento" options={["Quarto 1", "JK 1", "Apartamento 1"]} />
-        <Input label="Bairro" name="bairro" type="text" />
-        <Input label="CEP" name="cep" type="text" />
-        <Input label="Cidade" name="cidade" type="text" />
-        <Input label="Estado" name="estado" type="text" />
+        <TextInput label="Bairro" name="bairro" />
+        <TextInput label="CEP" name="cep" />
+        <TextInput label="Cidade" name="cidade" />
+        <TextInput label="Estado" name="estado" />
         <Select label="Tempo de moradia (meses)" name="tempoMoradia" options={["6", "12"]} />
-        <Input label="Data de entrada" name="entrada" type="date" />
-        <Input label="Data de saída" name="saida" type="date" />
-        <Input label="Dia de pagamento" name="diaPagamento" type="number" min={1} max={10} />
+        <TextInput label="Data de entrada" name="entrada" type="date" />
+        <TextInput label="Data de saída" name="saida" type="date" />
+        <TextInput label="Dia de pagamento" name="diaPagamento" type="number" min={1} max={10} />
         <Select label="Valor do aluguel" name="valor" options={["R$ 750,00", "R$ 950,00", "R$ 1.000,00"]} />
 
         <div className="botoes">
