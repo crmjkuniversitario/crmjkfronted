@@ -142,13 +142,12 @@ const CadastroCliente = () => {
         <Input label="Sobrenome" name="sobrenome" />
         <Input label="Data de nascimento" name="nascimento" type="date" />
         <Input label="CPF" name="cpf" />
-        <Input label="CPF (frente)" name="cpfFrente" type="file" accept="image/*" />
-        <Input label="CPF (verso)" name="cpfVerso" type="file" accept="image/*" />
+        <Input label="CPF" name="cpfFrente" type="file" accept="image/*" />
         <Input label="RG" name="rg" />
         <Input label="RG (frente)" name="rgFrente" type="file" accept="image/*" />
         <Input label="RG (verso)" name="rgVerso" type="file" accept="image/*" />
-        <Input label="Passaporte (estrangeiro)" name="passaporte" />
-        <Input label="Foto do passaporte" name="passaporteFoto" type="file" accept="image/*" />
+        <Input label="Passaporte" name="passaporte" />
+        <Input label="Passaporte" name="passaporteFoto" type="file" accept="image/*" />
         <Input label="Nacionalidade" name="nacionalidade" />
         <Select label="Ocupação" name="ocupacao" options={["Universitário(a)", "Trabalhador(a)"]} />
         <Input label="Celular" name="celular" />
