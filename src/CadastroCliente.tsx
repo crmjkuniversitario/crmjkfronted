@@ -3,7 +3,7 @@ import axios from 'axios';
 import './CadastroCliente.css';
 
 const CadastroCliente = () => {
-  const [formData, setFormData] = useState<{ [key: string]: string }>({
+  const [formData, setFormData] = useState<{ [key: string]: string }>(() => ({
     nome: "",
     sobrenome: "",
     nascimento: "",
@@ -26,7 +26,7 @@ const CadastroCliente = () => {
     saida: "",
     diaPagamento: "",
     valor: "",
-  });
+  }));
 
   const [files, setFiles] = useState<{ [key: string]: File | undefined }>({});
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
@@ -100,6 +100,7 @@ const CadastroCliente = () => {
           type="file"
           onChange={handleChange}
           className="input"
+          accept="image/*"
           {...props}
         />
       ) : (
@@ -110,6 +111,7 @@ const CadastroCliente = () => {
           value={formData[name] || ""}
           onChange={handleChange}
           className="input"
+          autoComplete="off"
           {...props}
         />
       )}
@@ -142,12 +144,12 @@ const CadastroCliente = () => {
         <Input label="Sobrenome" name="sobrenome" />
         <Input label="Data de nascimento" name="nascimento" type="date" />
         <Input label="CPF" name="cpf" />
-        <Input label="CPF" name="cpfFrente" type="file" accept="image/*" />
+        <Input label="CPF (foto)" name="cpfFoto" type="file" />
         <Input label="RG" name="rg" />
-        <Input label="RG (frente)" name="rgFrente" type="file" accept="image/*" />
-        <Input label="RG (verso)" name="rgVerso" type="file" accept="image/*" />
+        <Input label="RG (frente)" name="rgFotoFrente" type="file" />
+        <Input label="RG (verso)" name="rgFotoVerso" type="file" />
         <Input label="Passaporte" name="passaporte" />
-        <Input label="Passaporte" name="passaporteFoto" type="file" accept="image/*" />
+        <Input label="Passaporte (foto)" name="passaporteFoto" type="file" />
         <Input label="Nacionalidade" name="nacionalidade" />
         <Select label="Ocupação" name="ocupacao" options={["Universitário(a)", "Trabalhador(a)"]} />
         <Input label="Celular" name="celular" />
