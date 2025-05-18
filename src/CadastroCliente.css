@@ -1,3 +1,4 @@
+/* Container principal */
 .container {
   max-width: 960px;
   margin: 0 auto;
@@ -7,28 +8,42 @@
   font-family: sans-serif;
 }
 
+/* Título da página */
 .titulo {
-  font-size: 1.875rem;
+  font-size: 1.875rem; /* 30px */
   font-weight: bold;
   margin-bottom: 2rem;
   text-align: center;
   letter-spacing: 0.1em;
 }
 
+/* Container dos campos do formulário */
 .formulario {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1.5rem;
 }
 
+/* Inputs e selects */
 .input {
   background-color: #1a1a1a;
   border: 1px solid #3f3f3f;
   padding: 12px;
   border-radius: 6px;
   color: white;
+  font-size: 16px; /* Ajuste importante para evitar fechamento do teclado no celular */
+  font-family: inherit;
+  outline: none;
+  box-sizing: border-box;
 }
 
+/* Foco nos inputs */
+.input:focus {
+  border-color: #f97316;
+  box-shadow: 0 0 5px #f97316;
+}
+
+/* Container dos botões */
 .botoes {
   display: flex;
   gap: 1rem;
@@ -36,6 +51,7 @@
   margin-top: 1rem;
 }
 
+/* Botões padrão */
 .botao {
   background-color: #202020;
   color: #f97316;
@@ -43,8 +59,12 @@
   border-radius: 6px;
   transition: background-color 0.2s;
   border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
 }
 
+/* Botões ao passar o mouse */
 .botao:hover {
   background-color: #3a3a3a;
 }
